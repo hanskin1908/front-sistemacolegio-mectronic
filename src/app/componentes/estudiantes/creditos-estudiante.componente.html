@@ -1,0 +1,31 @@
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Créditos Académicos</h5>
+  </div>
+  <div class="card-body">
+    <div *ngIf="cargando" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+    <div *ngIf="!cargando && !error">
+      <h6>Total de Créditos: {{ totalCreditos }} / {{ maxCreditos }}</h6>
+      <div class="progress mt-2">
+        <div class="progress-bar bg-success" role="progressbar" 
+             [style.width.%]="obtenerPorcentajeProgreso()" 
+             [attr.aria-valuenow]="totalCreditos" 
+             aria-valuemin="0" 
+             [attr.aria-valuemax]="maxCreditos">
+          {{ totalCreditos }} créditos
+        </div>
+      </div>
+      <div class="mt-3 small text-muted">
+        <p>Cada asignatura equivale a 3 créditos.</p>
+        <p>Puedes inscribir un máximo de 3 asignaturas (9 créditos).</p>
+      </div>
+    </div>
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  </div>
+</div>

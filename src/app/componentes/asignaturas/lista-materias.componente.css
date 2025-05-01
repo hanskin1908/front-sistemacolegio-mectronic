@@ -1,0 +1,9 @@
+/* Estilos para Lista de Materias */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}

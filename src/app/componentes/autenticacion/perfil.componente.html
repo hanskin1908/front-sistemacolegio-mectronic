@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Perfil de Usuario</h4>
+        </div>
+        
+        <div class="card-body">
+          <div *ngIf="cargando" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+          
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+          
+          <div *ngIf="!cargando && !error && perfil">
+            <div class="text-center mb-4">
+              <div class="avatar-circle">
+                <i class="bi bi-person-circle"></i>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Nombre:</div>
+              <div class="col-md-8">{{ perfil.name }}</div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Correo Electru00f3nico:</div>
+              <div class="col-md-8">{{ perfil.email }}</div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4 fw-bold">Rol:</div>
+              <div class="col-md-8">
+                <span class="badge" [class.bg-success]="perfil.role === 'admin'" 
+                                    [class.bg-primary]="perfil.role === 'professor'" 
+                                    [class.bg-info]="perfil.role === 'student'">
+                  {{ perfil.role === 'admin' ? 'Administrador' : 
+                     perfil.role === 'professor' ? 'Profesor' : 'Estudiante' }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="row mb-3" *ngIf="perfil.role === 'student' && perfil.studentId">
+              <div class="col-md-4 fw-bold">ID de Estudiante:</div>
+              <div class="col-md-8">{{ perfil.studentId }}</div>
+            </div>
+            
+            <div class="row mb-3" *ngIf="perfil.role === 'professor' && perfil.professorId">
+              <div class="col-md-4 fw-bold">ID de Profesor:</div>
+              <div class="col-md-8">{{ perfil.professorId }}</div>
+            </div>
+            
+            <div class="mt-4" *ngIf="perfil.role === 'student' && perfil.studentId">
+              <app-creditos-estudiante [estudianteId]="perfil.studentId || 0"></app-creditos-estudiante>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

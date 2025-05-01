@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">{{ esEdicion ? 'Editar Estudiante' : 'Nuevo Estudiante' }}</h4>
+    </div>
+    <div class="card-body">
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      <div *ngIf="cargando" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+      <form [formGroup]="formularioEstudiante" (ngSubmit)="onSubmit()" *ngIf="!cargando">
+        <div class="mb-3">
+          <label for="id" class="form-label">ID</label>
+          <input 
+            type="number" 
+            id="id" 
+            formControlName="id" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': formularioEstudiante.get('id')?.invalid && formularioEstudiante.get('id')?.touched}"
+          >
+          <div *ngIf="formularioEstudiante.get('id')?.invalid && formularioEstudiante.get('id')?.touched" class="invalid-feedback">
+            <div *ngIf="formularioEstudiante.get('id')?.errors?.['required']">El ID es obligatorio</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre Completo</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            formControlName="nombre" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': formularioEstudiante.get('nombre')?.invalid && formularioEstudiante.get('nombre')?.touched}"
+          >
+          <div *ngIf="formularioEstudiante.get('nombre')?.invalid && formularioEstudiante.get('nombre')?.touched" class="invalid-feedback">
+            <div *ngIf="formularioEstudiante.get('nombre')?.errors?.['required']">El nombre es obligatorio</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="correo" class="form-label">Correo Electrónico</label>
+          <input 
+            type="email" 
+            id="correo" 
+            formControlName="correo" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': formularioEstudiante.get('correo')?.invalid && formularioEstudiante.get('correo')?.touched}"
+          >
+          <div *ngIf="formularioEstudiante.get('correo')?.invalid && formularioEstudiante.get('correo')?.touched" class="invalid-feedback">
+            <div *ngIf="formularioEstudiante.get('correo')?.errors?.['required']">El correo electrónico es obligatorio</div>
+            <div *ngIf="formularioEstudiante.get('correo')?.errors?.['email']">Ingrese un correo electrónico válido</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="matricula" class="form-label">Matrícula</label>
+          <input 
+            type="text" 
+            id="matricula" 
+            formControlName="matricula" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': formularioEstudiante.get('matricula')?.invalid && formularioEstudiante.get('matricula')?.touched}"
+          >
+          <div *ngIf="formularioEstudiante.get('matricula')?.invalid && formularioEstudiante.get('matricula')?.touched" class="invalid-feedback">
+            <div *ngIf="formularioEstudiante.get('matricula')?.errors?.['required']">La matrícula es obligatoria</div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" routerLink="/estudiantes">Cancelar</button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="formularioEstudiante.invalid || cargando"
+          >
+            {{ esEdicion ? 'Actualizar' : 'Crear' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

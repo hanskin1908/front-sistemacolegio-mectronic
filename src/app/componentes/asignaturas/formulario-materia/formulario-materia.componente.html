@@ -1,0 +1,101 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Registro de Materias</h2>
+      <p class="text-muted">Registra una nueva materia y asígnale un profesor</p>
+      <hr>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="cargando">
+    <div class="col-md-12 text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="error">
+    <div class="col-md-12">
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="exito">
+    <div class="col-md-12">
+      <div class="alert alert-success">
+        {{ exito }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Registro de Materias -->
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4><i class="bi bi-book me-2"></i>Registrar Nueva Materia</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="materiaFormulario" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre de la Materia</label>
+              <input type="text" id="nombre" formControlName="nombre" class="form-control" 
+                     [class.is-invalid]="materiaFormulario.get('nombre')?.invalid && materiaFormulario.get('nombre')?.touched">
+              <div *ngIf="materiaFormulario.get('nombre')?.invalid && materiaFormulario.get('nombre')?.touched" class="invalid-feedback">
+                El nombre de la materia es requerido.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="codigo" class="form-label">Código de la Materia</label>
+              <input type="text" id="codigo" formControlName="codigo" class="form-control" 
+                     [class.is-invalid]="materiaFormulario.get('codigo')?.invalid && materiaFormulario.get('codigo')?.touched">
+              <div *ngIf="materiaFormulario.get('codigo')?.invalid && materiaFormulario.get('codigo')?.touched" class="invalid-feedback">
+                El código de la materia es requerido.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="creditos" class="form-label">Créditos</label>
+              <input type="number" id="creditos" formControlName="creditos" class="form-control" min="1" max="5"
+                     [class.is-invalid]="materiaFormulario.get('creditos')?.invalid && materiaFormulario.get('creditos')?.touched">
+              <div *ngIf="materiaFormulario.get('creditos')?.invalid && materiaFormulario.get('creditos')?.touched" class="invalid-feedback">
+                <div *ngIf="materiaFormulario.get('creditos')?.errors?.['required']">El número de créditos es requerido.</div>
+                <div *ngIf="materiaFormulario.get('creditos')?.errors?.['min'] || materiaFormulario.get('creditos')?.errors?.['max']">Los créditos deben estar entre 1 y 5.</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="profesorId" class="form-label">Profesor</label>
+              <select id="profesorId" formControlName="profesorId" class="form-select" 
+                      [class.is-invalid]="materiaFormulario.get('profesorId')?.invalid && materiaFormulario.get('profesorId')?.touched">
+                <option value="">-- Selecciona un profesor --</option>
+                <option *ngFor="let profesor of profesores" [value]="profesor.id">
+                  {{ profesor.nombreCompleto || (profesor.nombre + ' ' + profesor.apellido) }}
+                </option>
+              </select>
+              <div *ngIf="materiaFormulario.get('profesorId')?.invalid && materiaFormulario.get('profesorId')?.touched" class="invalid-feedback">
+                Debes seleccionar un profesor.
+              </div>
+              <div class="form-text text-muted">
+                Valor actual: {{ materiaFormulario.get('profesorId')?.value }}
+              </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="materiaFormulario.invalid || cargando">
+                <i class="bi bi-plus-circle me-2"></i>Registrar Materia
+              </button>
+              <button type="button" class="btn btn-secondary" routerLink="/materias">
+                <i class="bi bi-arrow-left me-2"></i>Volver a la Lista
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

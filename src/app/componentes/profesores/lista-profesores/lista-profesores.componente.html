@@ -1,0 +1,60 @@
+<div class="container mt-4">
+  <div class="row mb-3">
+    <div class="col">
+      <h2>Listado de Profesores</h2>
+    </div>
+    <div class="col-auto" *ngIf="esAdmin">
+      <button class="btn btn-primary" (click)="agregarProfesor()">
+        <i class="bi bi-plus-circle me-2"></i>Agregar Profesor
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="cargando" class="d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!cargando && profesores.length === 0" class="alert alert-info">
+    No hay profesores registrados.
+  </div>
+
+  <div *ngIf="!cargando && profesores.length > 0" class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Especialidad</th>
+          <th *ngIf="esAdmin">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let profesor of profesores">
+          <td>{{ profesor.id }}</td>
+          <td>{{ profesor.nombre }}</td>
+          <td>{{ profesor.apellido }}</td>
+          <td>{{ profesor.email }}</td>
+          <td>{{ profesor.departamento || 'No especificada' }}</td>
+          <td *ngIf="esAdmin">
+            <div class="btn-group" role="group">
+              <button class="btn btn-sm btn-outline-primary" (click)="editarProfesor(profesor.id!)">
+                <i class="bi bi-pencil-square"></i> Editar
+              </button>
+              <button class="btn btn-sm btn-outline-danger ms-1" (click)="eliminarProfesor(profesor.id!)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

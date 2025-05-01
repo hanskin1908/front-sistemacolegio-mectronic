@@ -1,0 +1,132 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Registro de Materias</h2>
+      <hr>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="cargando">
+    <div class="col-md-12 text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="error">
+    <div class="col-md-12">
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="exito">
+    <div class="col-md-12">
+      <div class="alert alert-success">
+        {{ exito }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Materias Actuales -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4>Mis Materias Registradas</h4>
+        </div>
+        <div class="card-body">
+          <app-creditos-estudiante [estudianteId]="estudianteId"></app-creditos-estudiante>
+          
+          <div *ngIf="inscripcionesActuales.length === 0" class="text-center mt-3">
+            <p>No tienes materias registradas.</p>
+          </div>
+          
+          <div *ngIf="inscripcionesActuales.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Materia</th>
+                  <th>Profesor</th>
+                  <th>Créditos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let inscripcion of inscripcionesActuales">
+                  <td>{{ inscripcion.nombreMateria }}</td>
+                  <td>{{ inscripcion.nombreProfesor }}</td>
+                  <td>{{ inscripcion.creditos }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-info me-2" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#companerosModal-' + inscripcion.id" data-testid="ver-companeros-btn">
+                      <i class="bi bi-people"></i> Ver Compañeros
+                    </button>
+                    <div class="modal fade companeros-modal" [id]="'companerosModal-' + inscripcion.id" tabindex="-1" aria-labelledby="companerosModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="companerosModalLabel">Compañeros de {{ inscripcion.nombreMateria }}</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <app-companeros [asignaturaId]="inscripcion.materiaId" [estudianteActualId]="estudianteId"></app-companeros>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-danger" (click)="desinscribirAsignatura(inscripcion.id)">
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Registro -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h4>Registrar Nueva Materia</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formularioInscripcion" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="asignaturaId" class="form-label">Selecciona una Materia</label>
+              <select id="asignaturaId" formControlName="asignaturaId" class="form-select" 
+                      [class.is-invalid]="formularioInscripcion.get('asignaturaId')?.invalid && formularioInscripcion.get('asignaturaId')?.touched">
+                <option value="">-- Selecciona una materia --</option>
+                <option *ngFor="let asignatura of asignaturasDisponibles" [ngValue]="asignatura.id">
+                  {{ asignatura.nombre }} - Prof. {{ asignatura.profesor?.nombre }} ({{ asignatura.creditos }} créditos)
+                </option>
+              </select>
+              <div *ngIf="formularioInscripcion.get('asignaturaId')?.invalid && formularioInscripcion.get('asignaturaId')?.touched" class="invalid-feedback">
+                Debes seleccionar una materia.
+              </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success" [disabled]="formularioInscripcion.invalid || cargando || inscripcionesActuales.length >= maxAsignaturas">
+                <i class="bi bi-plus-circle"></i> Registrar Materia
+              </button>
+            </div>
+            
+            <div *ngIf="inscripcionesActuales.length >= maxAsignaturas" class="alert alert-warning mt-3">
+              Has alcanzado el límite máximo de {{ maxAsignaturas }} materias.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

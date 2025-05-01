@@ -1,0 +1,127 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">{{ esEdicion ? 'Editar' : 'Agregar' }} Profesor</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+
+          <form [formGroup]="profesorForm" (ngSubmit)="enviar()">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input 
+                  type="text" 
+                  id="nombre" 
+                  formControlName="nombre" 
+                  class="form-control" 
+                  [ngClass]="{'is-invalid': profesorForm.get('nombre')?.invalid && profesorForm.get('nombre')?.touched}"
+                >
+                <div *ngIf="profesorForm.get('nombre')?.invalid && profesorForm.get('nombre')?.touched" class="invalid-feedback">
+                  <div *ngIf="profesorForm.get('nombre')?.errors?.['required']">El nombre es obligatorio</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input 
+                  type="text" 
+                  id="apellido" 
+                  formControlName="apellido" 
+                  class="form-control" 
+                  [ngClass]="{'is-invalid': profesorForm.get('apellido')?.invalid && profesorForm.get('apellido')?.touched}"
+                >
+                <div *ngIf="profesorForm.get('apellido')?.invalid && profesorForm.get('apellido')?.touched" class="invalid-feedback">
+                  <div *ngIf="profesorForm.get('apellido')?.errors?.['required']">El apellido es obligatorio</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': profesorForm.get('email')?.invalid && profesorForm.get('email')?.touched}"
+              >
+              <div *ngIf="profesorForm.get('email')?.invalid && profesorForm.get('email')?.touched" class="invalid-feedback">
+                <div *ngIf="profesorForm.get('email')?.errors?.['required']">El correo electrónico es obligatorio</div>
+                <div *ngIf="profesorForm.get('email')?.errors?.['email']">Ingrese un correo electrónico válido</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="departamento" class="form-label">Departamento</label>
+              <input 
+                type="text" 
+                id="departamento" 
+                formControlName="departamento" 
+                class="form-control"
+                [ngClass]="{'is-invalid': profesorForm.get('departamento')?.invalid && profesorForm.get('departamento')?.touched}"
+              >
+              <div *ngIf="profesorForm.get('departamento')?.invalid && profesorForm.get('departamento')?.touched" class="invalid-feedback">
+                <div *ngIf="profesorForm.get('departamento')?.errors?.['required']">El departamento es obligatorio</div>
+              </div>
+            </div>
+
+            <!-- Campos eliminados por no ser necesarios
+            <div class="mb-3">
+              <label for="especialidad" class="form-label">Especialidad</label>
+              <input 
+                type="text" 
+                id="especialidad" 
+                formControlName="especialidad" 
+                class="form-control"
+              >
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input 
+                  type="text" 
+                  id="telefono" 
+                  formControlName="telefono" 
+                  class="form-control"
+                >
+              </div>
+              <div class="col-md-6">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input 
+                  type="text" 
+                  id="direccion" 
+                  formControlName="direccion" 
+                  class="form-control"
+                >
+              </div>
+            </div>
+            -->
+
+            <div class="d-flex justify-content-end gap-2">
+              <button 
+                type="button" 
+                class="btn btn-secondary" 
+                (click)="cancelar()"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="profesorForm.invalid || cargando"
+              >
+                <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ esEdicion ? 'Actualizar' : 'Guardar' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

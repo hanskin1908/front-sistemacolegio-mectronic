@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{ modoEdicion ? 'Editar' : 'Nuevo' }} Estudiante</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="cargando" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando información...</p>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <div *ngIf="exito" class="alert alert-success">
+        {{ exito }}
+      </div>
+
+      <form [formGroup]="formularioEstudiante" (ngSubmit)="onSubmit()" *ngIf="!cargando">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Nombre">
+          <div *ngIf="formularioEstudiante.get('nombre')?.invalid && formularioEstudiante.get('nombre')?.touched" class="text-danger">
+            <small *ngIf="formularioEstudiante.get('nombre')?.errors?.['required']">El nombre es requerido</small>
+            <small *ngIf="formularioEstudiante.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="apellido" formControlName="apellido" placeholder="Apellido">
+          <div *ngIf="formularioEstudiante.get('apellido')?.invalid && formularioEstudiante.get('apellido')?.touched" class="text-danger">
+            <small *ngIf="formularioEstudiante.get('apellido')?.errors?.['required']">El apellido es requerido</small>
+            <small *ngIf="formularioEstudiante.get('apellido')?.errors?.['minlength']">El apellido debe tener al menos 3 caracteres</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="correo@ejemplo.com">
+          <div *ngIf="formularioEstudiante.get('email')?.invalid && formularioEstudiante.get('email')?.touched" class="text-danger">
+            <small *ngIf="formularioEstudiante.get('email')?.errors?.['required']">El correo electrónico es requerido</small>
+            <small *ngIf="formularioEstudiante.get('email')?.errors?.['email']">Ingrese un correo electrónico válido</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="matricula" class="form-label">Matrícula</label>
+          <input type="text" class="form-control" id="matricula" formControlName="matricula" placeholder="Matrícula">
+          <div *ngIf="formularioEstudiante.get('matricula')?.invalid && formularioEstudiante.get('matricula')?.touched" class="text-danger">
+            <small *ngIf="formularioEstudiante.get('matricula')?.errors?.['required']">La matrícula es requerida</small>
+            <small *ngIf="formularioEstudiante.get('matricula')?.errors?.['minlength']">La matrícula debe tener al menos 5 caracteres</small>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" routerLink="/estudiantes">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="formularioEstudiante.invalid || enviando">
+            <span *ngIf="enviando" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            {{ modoEdicion ? 'Actualizar' : 'Crear' }} Estudiante
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

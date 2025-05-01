@@ -1,0 +1,37 @@
+<div class="creditos-container">
+  <div *ngIf="cargando" class="text-center">
+    <div class="spinner-border spinner-border-sm text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+  
+  <div *ngIf="!cargando && !error" class="card">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Resumen de Créditos</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="mb-1"><strong>Total de Asignaturas:</strong> {{ asignaturas.length }}</p>
+          <p class="mb-0"><strong>Total de Créditos:</strong> {{ totalCreditos }}</p>
+        </div>
+        <div class="col-md-6">
+          <div class="progress" style="height: 25px;">
+            <div class="progress-bar bg-success" role="progressbar" 
+                 [style.width.%]="(totalCreditos / 9) * 100" 
+                 [attr.aria-valuenow]="totalCreditos" 
+                 aria-valuemin="0" 
+                 aria-valuemax="9">
+              {{ totalCreditos }} / 9 créditos
+            </div>
+          </div>
+          <small class="text-muted">Máximo recomendado: 9 créditos</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

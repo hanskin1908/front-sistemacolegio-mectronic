@@ -1,0 +1,124 @@
+<div class="container mt-4">
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+  <div *ngIf="cargando" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+  <div *ngIf="estudiante && !cargando">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Detalle del Estudiante</h2>
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary" routerLink="/estudiantes">Volver</button>
+        <button class="btn btn-outline-primary" [routerLink]="['/estudiantes', estudiante.id, 'editar']" *ngIf="esAdmin">Editar</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Información Personal</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <strong>Matrícula:</strong> {{ estudiante.matricula }}
+            </div>
+            <div class="mb-3">
+              <strong>Nombre:</strong> {{ estudiante.nombre }}
+            </div>
+            <div class="mb-3">
+              <strong>Correo Electrónico:</strong> {{ estudiante.email }}
+            </div>
+          </div>
+        </div>
+        <app-creditos-estudiante [estudianteId]="estudiante.id!"></app-creditos-estudiante>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Asignaturas Inscritas</h5>
+            <span class="badge bg-light text-dark">{{ inscripciones.length }}/3 Asignaturas</span>
+          </div>
+          <div class="card-body">
+            <div *ngIf="errorInscripcion" class="alert alert-danger">
+              {{ errorInscripcion }}
+            </div>
+            <div *ngIf="inscripciones.length === 0" class="alert alert-info">
+              No hay asignaturas inscritas.
+            </div>
+            <div class="table-responsive" *ngIf="inscripciones.length > 0">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Asignatura</th>
+                    <th>Créditos</th>
+                    <th>Profesor</th>
+                    <th>Compañeros</th>
+                    <th *ngIf="esUsuarioActual || esAdmin">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ins of inscripciones">
+                    <td>{{ ins.nombreMateria || 'No disponible' }}</td>
+                    <td>{{ ins.creditos || 'No disponible' }}</td>
+                    <td>{{ ins.nombreProfesor || 'No asignado' }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-info" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#companerosModal-' + ins.id">
+                        Ver compañeros
+                      </button>
+                      <div class="modal fade companeros-modal" [id]="'companerosModal-' + ins.id" tabindex="-1" aria-labelledby="companerosModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                              <h5 class="modal-title" id="companerosModalLabel">Compañeros de {{ ins.nombreMateria }}</h5>
+                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <app-companeros [asignaturaId]="ins.materiaId" [estudianteActualId]="estudiante.id!"></app-companeros>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td *ngIf="esUsuarioActual || esAdmin">
+                      <button class="btn btn-sm btn-outline-danger" (click)="desinscribirAsignatura(ins.id!)">
+                        <i class="bi bi-trash"></i> Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="(esUsuarioActual || esAdmin) && inscripciones.length < 3" class="mt-4">
+              <h5>Inscribir Nueva Asignatura</h5>
+              <div class="row g-3 align-items-center">
+                <div class="col-md-8">
+                  <select class="form-select" [(ngModel)]="asignaturaSeleccionadaId">
+                    <option [ngValue]="null">Seleccionar asignatura...</option>
+                    <option *ngFor="let asignatura of asignaturasDisponibles" [value]="asignatura.id">
+                      {{ asignatura.nombre }} - Prof. {{ asignatura.profesor?.nombre }} {{ asignatura.profesor?.apellido }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <button 
+                    class="btn btn-primary" 
+                    (click)="registrarAsignatura()" 
+                    [disabled]="!asignaturaSeleccionadaId || cargando"
+                  >
+                    <i class="bi bi-plus-circle"></i> Inscribir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Estilos globales para modales */
+.modal-backdrop {
+  opacity: 0.5 !important;
+  z-index: 1040 !important;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050 !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+
+.modal-content {
+  position: relative;
+  z-index: 1060 !important;
+}
+
+.modal-header .btn-close,
+.modal-footer .btn {
+  position: relative;
+  z-index: 1070 !important;
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+  transform: none;
+}
+
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Asegurar que los botones sean clickeables */
+button {
+  position: relative;
+  z-index: auto;
+}
+
+/* Clase específica para la modal de compañeros */
+.classmates-modal {
+  z-index: 1050 !important;
+}
+
+.classmates-modal .modal-content {
+  z-index: 1060 !important;
+}
+
+.classmates-modal .btn-close,
+.classmates-modal .btn {
+  z-index: 1070 !important;
+  position: relative;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}

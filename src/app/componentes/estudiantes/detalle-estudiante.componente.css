@@ -1,0 +1,37 @@
+/* Estilos para Detalle de Estudiante */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.card-header {
+  font-weight: 500;
+}
+.table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+.badge {
+  font-size: 85%;
+  padding: 5px 10px;
+}
+strong {
+  font-weight: 600;
+}
+.modal-backdrop {
+  opacity: 0.5 !important;
+}
+.modal {
+  z-index: 1050 !important;
+}
+.modal-content {
+  z-index: 1060 !important;
+}
+.modal-header .btn-close {
+  opacity: 1;
+  z-index: 1070 !important;
+  position: relative;
+}
+.modal-footer .btn {
+  z-index: 1070 !important;
+  position: relative;
+}

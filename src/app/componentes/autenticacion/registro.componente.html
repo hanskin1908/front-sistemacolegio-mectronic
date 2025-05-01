@@ -1,0 +1,128 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Registro de Usuario</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+          <form [formGroup]="formularioRegistro" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre Completo</label>
+              <input 
+                type="text" 
+                id="nombre" 
+                formControlName="nombre" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('nombre')?.invalid && formularioRegistro.get('nombre')?.touched}"
+              >
+              <div *ngIf="formularioRegistro.get('nombre')?.invalid && formularioRegistro.get('nombre')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('nombre')?.errors?.['required']">El nombre es obligatorio</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="correo" class="form-label">Correo Electrónico</label>
+              <input 
+                type="email" 
+                id="correo" 
+                formControlName="correo" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('correo')?.invalid && formularioRegistro.get('correo')?.touched}"
+              >
+              <div *ngIf="formularioRegistro.get('correo')?.invalid && formularioRegistro.get('correo')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('correo')?.errors?.['required']">El correo electrónico es obligatorio</div>
+                <div *ngIf="formularioRegistro.get('correo')?.errors?.['email']">Ingrese un correo electrónico válido</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="rol" class="form-label">Rol</label>
+              <select 
+                id="rol" 
+                formControlName="rol" 
+                class="form-select" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('rol')?.invalid && formularioRegistro.get('rol')?.touched}"
+              >
+                <option value="student">Estudiante</option>
+                <option value="professor">Profesor</option>
+                <option value="admin">Administrador</option>
+              </select>
+              <div *ngIf="formularioRegistro.get('rol')?.invalid && formularioRegistro.get('rol')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('rol')?.errors?.['required']">El rol es obligatorio</div>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="formularioRegistro.get('rol')?.value === 'student'">
+              <label for="idEstudiante" class="form-label">ID de Estudiante</label>
+              <input 
+                type="number" 
+                id="idEstudiante" 
+                formControlName="idEstudiante" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('idEstudiante')?.invalid && formularioRegistro.get('idEstudiante')?.touched}"
+              >
+              <div *ngIf="formularioRegistro.get('idEstudiante')?.invalid && formularioRegistro.get('idEstudiante')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('idEstudiante')?.errors?.['required']">El ID de estudiante es obligatorio</div>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="formularioRegistro.get('rol')?.value === 'professor'">
+              <label for="idProfesor" class="form-label">ID de Profesor</label>
+              <input 
+                type="number" 
+                id="idProfesor" 
+                formControlName="idProfesor" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('idProfesor')?.invalid && formularioRegistro.get('idProfesor')?.touched}"
+              >
+              <div *ngIf="formularioRegistro.get('idProfesor')?.invalid && formularioRegistro.get('idProfesor')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('idProfesor')?.errors?.['required']">El ID de profesor es obligatorio</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="contrasena" class="form-label">Contraseña</label>
+              <input 
+                type="password" 
+                id="contrasena" 
+                formControlName="contrasena" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('contrasena')?.invalid && formularioRegistro.get('contrasena')?.touched}"
+              >
+              <div *ngIf="formularioRegistro.get('contrasena')?.invalid && formularioRegistro.get('contrasena')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('contrasena')?.errors?.['required']">La contraseña es obligatoria</div>
+                <div *ngIf="formularioRegistro.get('contrasena')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmarContrasena" class="form-label">Confirmar Contraseña</label>
+              <input 
+                type="password" 
+                id="confirmarContrasena" 
+                formControlName="confirmarContrasena" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioRegistro.get('confirmarContrasena')?.invalid && formularioRegistro.get('confirmarContrasena')?.touched}"
+              >
+              <div *ngIf="formularioRegistro.get('confirmarContrasena')?.invalid && formularioRegistro.get('confirmarContrasena')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioRegistro.get('confirmarContrasena')?.errors?.['required']">Confirme su contraseña</div>
+                <div *ngIf="formularioRegistro.get('confirmarContrasena')?.errors?.['noCoincide']">Las contraseñas no coinciden</div>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="formularioRegistro.invalid || cargando"
+              >
+                <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Registrarse
+              </button>
+            </div>
+          </form>
+          <div class="mt-3 text-center">
+            <p>¿Ya tienes una cuenta? <a routerLink="/inicio-sesion">Inicia sesión aquí</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

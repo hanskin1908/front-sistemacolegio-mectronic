@@ -1,0 +1,59 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Iniciar Sesión</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+          <form [formGroup]="formularioInicioSesion" (ngSubmit)="enviar()">
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioInicioSesion.get('email')?.invalid && formularioInicioSesion.get('email')?.touched}"
+              >
+              <div *ngIf="formularioInicioSesion.get('email')?.invalid && formularioInicioSesion.get('email')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioInicioSesion.get('email')?.errors?.['required']">El correo electrónico es obligatorio</div>
+                <div *ngIf="formularioInicioSesion.get('email')?.errors?.['email']">Ingrese un correo electrónico válido</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input 
+                type="password" 
+                id="password" 
+                formControlName="password" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': formularioInicioSesion.get('password')?.invalid && formularioInicioSesion.get('password')?.touched}"
+              >
+              <div *ngIf="formularioInicioSesion.get('password')?.invalid && formularioInicioSesion.get('password')?.touched" class="invalid-feedback">
+                <div *ngIf="formularioInicioSesion.get('password')?.errors?.['required']">La contraseña es obligatoria</div>
+                <div *ngIf="formularioInicioSesion.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="formularioInicioSesion.invalid || cargando"
+              >
+                <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Iniciar Sesión
+              </button>
+            </div>
+          </form>
+          <div class="mt-3 text-center">
+            <p>¿No tienes una cuenta? <a routerLink="/registro">Regístrate aquí</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
